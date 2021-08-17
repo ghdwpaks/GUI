@@ -323,11 +323,14 @@ class sectors :
 while True :
 
     root = tkinter.Tk()
-    canvas = tkinter.Canvas(width = 800, height = 600)
+    cv_width = 800
+    cv_height = 600
+    canvas = tkinter.Canvas(width=cv_width,height= cv_height)
     canvas.pack()
-    button = tkinter.Button(text = "1.품목명별 정보 출력", font = ("System", 32))
-    button.place(x = 400, y = 480)
+    button = tkinter.Button(text = "1.품목명별 정보 출력", font = ("System", 32),width=20,height=1)
+    button.place(x=cv_width/2,y=cv_height//2)
     root.mainloop()
+    
     print("\n\n\n")
     print("농수산물 정보 출력 시스템에 진입했습니다.")
     print("원하는 기능을 '숫자로만' 선택해주세요.")
