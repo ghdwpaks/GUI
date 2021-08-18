@@ -328,7 +328,7 @@ while True :
     canvas = tkinter.Canvas(width=cv_width,height= cv_height)
     canvas.pack()
     button = tkinter.Button(text = "1.품목명별 정보 출력", font = ("System", 32),width=20,height=1)
-    button.place(x=cv_width/2,y=cv_height//2)
+    button.pack(side="bottom")
     root.mainloop()
     
     print("\n\n\n")
