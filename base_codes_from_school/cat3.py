@@ -1,5 +1,6 @@
 #진단 게임 만들기
 import tkinter
+from typing import ItemsView
 RESULT = [
 "전생에 고양이였을 가능성은 매우 낮습니다.",
 "보통 사람입니다.",
@@ -40,11 +41,10 @@ ITEM = [
     "생선 뼈를 발라 먹고 싶다.",
     "밤, 기운이 난다."
 ]
-for i in range(7):
+for i in range(len(ITEM)):
     bVar[i] = tkinter.BooleanVar()
     bVar[i].set(False)
-    cbtn[i] = tkinter.Checkbutton(text = ITEM[i], font = ("System", 12),
-                                  variable = bVar[i] )
+    cbtn[i] = tkinter.Checkbutton(text = ITEM[i], font = ("System", 12),variable = bVar[i] )
     cbtn[i].place(x = 400, y = 160 + 40 * i)
 
 root.mainloop()

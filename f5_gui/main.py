@@ -1,6 +1,8 @@
 
 import tkinter 
 import csv
+from tkinter import Place, Variable, font
+from typing import Sized
 
 
 def GUI_main() :
@@ -224,6 +226,9 @@ class selects :
 
 class sectors :
     def sector1() :
+        print("enterd sector 1 ")
+        text["text"] = "enterd sector 1"
+
         table = []
         table = setting.get_table("table.csv")
         #print("len(table) bf :",len(table))
@@ -327,14 +332,15 @@ while True :
     cv_height = 600
     canvas = tkinter.Canvas(width=cv_width,height= cv_height)
     canvas.pack()
+    button = tkinter.Button(text = "1.품목명별 정보 출력", font = ("System", 32),width=20,height=1,command=sectors.sector1)
+    button.pack(side="bottom")
+    text = tkinter.Label(text="Hello world", font = ("System", 16))
+    text.pack(side="top")
+    
+
+
+    '''
     button = tkinter.Button(text = "1.품목명별 정보 출력", font = ("System", 32),width=20,height=1)
     button.pack(side="bottom")
+    '''
     root.mainloop()
-    
-    print("\n\n\n")
-    print("농수산물 정보 출력 시스템에 진입했습니다.")
-    print("원하는 기능을 '숫자로만' 선택해주세요.")
-    print("1.품목명별 정보 출력")
-    select1_subject = input("입력 : ")
-    if select1_subject == '1' :
-        sectors.sector1()
