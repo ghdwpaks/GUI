@@ -1,8 +1,7 @@
 
 import tkinter 
 import csv
-from tkinter import Place, Variable, font
-from typing import Sized
+import os
 
 
 def GUI_main() :
@@ -47,6 +46,49 @@ class prints :
                     count += 2 
         #print("GRLOC :",count)
         return count
+    
+    def print_div_6_on_label(table) :
+        answer = ""
+        for i in range(len(table)) :
+            if i % 6 == 0 and i != 0:
+                answer += "\n"
+            #print(table[i],end="\t")
+            answer += table[i]+"\t"
+            if prints.get_real_length_on_CMD(table[i]) < 8 :
+                #print("\t\t",end="")
+                answer += "\t\t"
+            elif prints.get_real_length_on_CMD(table[i]) < 16 :
+                #print("\t",end="")
+                answer += "\t"
+        print("prints print div 6 on label :",answer)
+        text["text"] = answer
+        os.system("pause")
+        return answer
+    
+    def get_div_6_on_listbox(table,listbox) :
+        print(type(listbox))
+
+        
+        for i in range(len(table)) :
+            if i % 6 == 0 and i != 0:
+                print()
+            print(table[i],end="\t")
+            adds = ""
+            if prints.get_real_length_on_CMD(table[i]) < 8 :
+                #print("\t\t",end="")
+                adds = "\t\t"
+            elif prints.get_real_length_on_CMD(table[i]) < 16 :
+                #print("\t",end="")
+                adds = "\t"
+            listbox.insert(i,str(table[i])+"\t"+adds)
+
+        #os.system("pause")
+        #for line in range(1,1001):
+        #    listbox.insert(line, str(line) + "/1000")
+        listbox.pack(side="right")
+        return listbox
+
+
 
 class setting :
 
@@ -226,9 +268,10 @@ class selects :
 
 class sectors :
     def sector1() :
-        print("enterd sector 1 ")
-        text["text"] = "enterd sector 1"
-
+        print("sector 1 enterd")
+        
+        text["text"] = "sector 1 enterd"
+        
         table = []
         table = setting.get_table("table.csv")
         #print("len(table) bf :",len(table))
@@ -237,110 +280,122 @@ class sectors :
         #print("len(table) af :",len(table))
         #prints.print_list(table)
 
+
         big_cat = selects.select_lv1_category(table)
+        
+        huge_cat = []
+        for i in big_cat :
+            appending_ops = str(i).split("(")[0]
+            if not appending_ops in huge_cat :
+                huge_cat.append(appending_ops)
+        print("sectors1 huge_cat :")
+        prints.print_list(huge_cat)
+
+        
+        print("before get while")
+
+        print("1")
+        frame=tkinter.Frame(root)
+
+        scrollbar=tkinter.Scrollbar(frame)
+        scrollbar.pack(side="right", fill="y")
+
+        listbox=tkinter.Listbox(frame, width=50, height=20, yscrollcommand = scrollbar.set)
+        listbox = prints.get_div_6_on_listbox(huge_cat,listbox)
+        listbox.pack(side="right")
+
+        scrollbar["command"]=listbox.yview
+
+        frame.pack()
+
+        prints.print_div_6(huge_cat)
+        os.system("pause")
+        user_big_cat = ""
         while True :
-            
-
-            prints.print_div_6(big_cat)
-            user_big_cat = ""
-            while True :
-                print("종류를 정확히 골라주세요")
-                user_big_cat = input("입력 :")
-                if user_big_cat in big_cat :
-                    print("주제가 정확히 들어맞음을 확인했습니다.")
-                    break
-                else :
-                    print("주제가 포함되지 않음을 확인했습니다.")
-                    continue
-            
-            small_cat = selects.select_lv2_category(table,user_big_cat)
-            print("sector 1 small_cat :")
-            prints.print_list(small_cat)
-
-            kinds_lv2 = []
-            for i in table :
-                if i[1] not in kinds_lv2 :
-                    kinds_lv2.append(i[1])
-            print("duplicate_deficiencying kinds_lv2 :",kinds_lv2)
-            prints.print_list(kinds_lv2)
-            setting.sorting_grade(kinds_lv2)
-            print("1.품목명별 정보 출력(기본값)")
-            print("2.단위별 정보 출력")
-            print("3.등급별 정보 출력")
-            print("4.가격별 정보 출력")
-            sorting_sub = input("입력 : ")
-            kinds_res_cat = setting.duplicate_deficiencying_name(small_cat)
-            kinds_res_cat = setting.integrating_list(kinds_res_cat)
-
-            
-
-            if sorting_sub== "1" :
-                print("품목명별 정보 출력 선택됨")
-            elif sorting_sub== "2" :
-                print("단위별 정보 출력 선택됨")
-                #kinds_res_cat.sort(key=lambda x:x[1])
-                
-            elif sorting_sub== "3" :
-                print("등급별 정보 출력 선택됨")
-                kinds_res_cat.sort(key=lambda x:x[2])
-            elif sorting_sub== "4" :
-                print("가격별 정보 출력 선택됨")
-                kinds_res_cat.sort(key=lambda x:x[3])
-
-
-
-            
-            print("이름\t\t\t\t무게\t등급\t\t평균가격")
-            for i in kinds_res_cat :
-                #print("sector 1 kinds_res_cat i :",i)
-                #print("{}\t\t{}\t{}\t\t{}".format(i[0][0],i[0][1],i[0][2],i[1]))
-                #get_real_length_on_CMD
-                pass
-                print(i[0],end="")
-                if prints.get_real_length_on_CMD(i[0]) < 8 :
-                    print("\t\t\t\t",end="")
-                elif prints.get_real_length_on_CMD(i[0]) < 16 :
-                    print("\t\t\t",end="")
-                elif prints.get_real_length_on_CMD(i[0]) < 24 :
-                    print("\t\t",end="")
-                elif prints.get_real_length_on_CMD(i[0]) < 32 :
-                    print(" \t",end="")
-                    
-                print(i[1],end="\t")
-                print(i[2],end="")
-                if prints.get_real_length_on_CMD(i[2]) < 8 :
-                    print("\t\t",end="")
-                elif prints.get_real_length_on_CMD(i[2]) < 16 :
-                    print("\t",end="")
-                print(i[3])
-            print("이름\t\t\t\t무게\t등급\t\t평균가격")
-            
-            print("\n\n")
-            print("sector 1 의 역할이 전부 끝났습니다.\n계속 하시려면 엔터, 그만두시려면 'ㄴ' 또는 's'를 눌러주세요")
-            choose_exit = input("입력 : ")
-            choose_exit.lower()
-            if choose_exit == 'ㄴ' or choose_exit == "s" :
+            print("종류를 정확히 골라주세요")
+            user_big_cat = input("입력 :")
+            if user_big_cat in huge_cat :
+                print("주제가 정확히 들어맞음을 확인했습니다.")
                 break
             else :
+                print("주제가 포함되지 않음을 확인했습니다.")
                 continue
-            print("\n\n")
+        
+        small_cat = selects.select_lv2_category(table,user_big_cat)
+        print("sector 1 small_cat :")
+        prints.print_list(small_cat)
 
-while True :
+        kinds_lv2 = []
+        for i in table :
+            if i[1] not in kinds_lv2 :
+                kinds_lv2.append(i[1])
+        print("duplicate_deficiencying kinds_lv2 :",kinds_lv2)
+        prints.print_list(kinds_lv2)
+        setting.sorting_grade(kinds_lv2)
+        print("1.품목명별 정보 출력(기본값)")
+        print("2.단위별 정보 출력")
+        print("3.등급별 정보 출력")
+        print("4.가격별 정보 출력")
+        sorting_sub = input("입력 : ")
+        kinds_res_cat = setting.duplicate_deficiencying_name(small_cat)
+        kinds_res_cat = setting.integrating_list(kinds_res_cat)
 
-    root = tkinter.Tk()
-    cv_width = 800
-    cv_height = 600
-    canvas = tkinter.Canvas(width=cv_width,height= cv_height)
-    canvas.pack()
-    button = tkinter.Button(text = "1.품목명별 정보 출력", font = ("System", 32),width=20,height=1,command=sectors.sector1)
-    button.pack(side="bottom")
-    text = tkinter.Label(text="Hello world", font = ("System", 16))
-    text.pack(side="top")
-    
+        
+
+        if sorting_sub== "1" :
+            print("품목명별 정보 출력 선택됨")
+        elif sorting_sub== "2" :
+            print("단위별 정보 출력 선택됨")
+            #kinds_res_cat.sort(key=lambda x:x[1])
+            
+        elif sorting_sub== "3" :
+            print("등급별 정보 출력 선택됨")
+            kinds_res_cat.sort(key=lambda x:x[2])
+        elif sorting_sub== "4" :
+            print("가격별 정보 출력 선택됨")
+            kinds_res_cat.sort(key=lambda x:x[3])
 
 
-    '''
-    button = tkinter.Button(text = "1.품목명별 정보 출력", font = ("System", 32),width=20,height=1)
-    button.pack(side="bottom")
-    '''
-    root.mainloop()
+
+        
+        print("이름\t\t\t\t무게\t등급\t\t평균가격")
+        for i in kinds_res_cat :
+            #print("sector 1 kinds_res_cat i :",i)
+            #print("{}\t\t{}\t{}\t\t{}".format(i[0][0],i[0][1],i[0][2],i[1]))
+            #get_real_length_on_CMD
+            pass
+            print(i[0],end="")
+            if prints.get_real_length_on_CMD(i[0]) < 8 :
+                print("\t\t\t\t",end="")
+            elif prints.get_real_length_on_CMD(i[0]) < 16 :
+                print("\t\t\t",end="")
+            elif prints.get_real_length_on_CMD(i[0]) < 24 :
+                print("\t\t",end="")
+            elif prints.get_real_length_on_CMD(i[0]) < 32 :
+                print(" \t",end="")
+                
+            print(i[1],end="\t")
+            print(i[2],end="")
+            if prints.get_real_length_on_CMD(i[2]) < 8 :
+                print("\t\t",end="")
+            elif prints.get_real_length_on_CMD(i[2]) < 16 :
+                print("\t",end="")
+            print(i[3])
+        print("이름\t\t\t\t무게\t등급\t\t평균가격")
+        
+        print("\n\n")
+        print("sector 1 의 역할이 전부 끝났습니다.\n계속 하시려면 엔터, 그만두시려면 'ㄴ' 또는 's'를 눌러주세요")
+        choose_exit = input("입력 : ")
+        choose_exit.lower()
+        print("\n\n")
+
+root = tkinter.Tk()
+cv_width = 800
+cv_height = 400
+canvas = tkinter.Canvas(width=cv_width,height= cv_height)
+canvas.pack()
+text = tkinter.Label(text="Hello world")
+text.pack()
+button = tkinter.Button(text = "1.품목명별 정보 출력", font = ("System", 32),width=20,height=1,command=sectors.sector1)
+button.pack(side="top")
+root.mainloop()
