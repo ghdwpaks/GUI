@@ -2,6 +2,17 @@
 import tkinter 
 import csv
 import os
+import os
+import threading
+import time
+from queue import Queue
+import copy as c
+
+
+table_queue = Queue()  
+big_cat_queue = Queue()
+last_ops_queue = Queue()
+user_big_cat = "nonn"
 
 
 def GUI_main() :
@@ -91,6 +102,43 @@ class prints :
 
 
 class setting :
+
+    
+
+    def setting_column_on_queue() :
+        while True :
+            try :
+                table_tuple = table_queue.get()
+                table_queue.put([table_tuple["품목명"],table_tuple["단위"],table_tuple["등급"],table_tuple["가격"]])
+            except :
+                break
+    
+    def setting_column_on_queue_bit_cat() :
+        
+
+        
+        for i in range(int(table_queue.qsize())//thread_count) :
+            try :
+
+                table_tuple = table_queue.get()
+                #print("table_tuple :",table_tuple)
+                temp = str(table_tuple[0]).split("]")
+                #print("temp1 :",temp)
+                del temp[0]
+                #print("temp2 :",temp)
+                temp = str(temp[0]).split("(")[0]
+                #print("temp3 :",temp)   
+                big_cat_queue.put(temp)
+
+                table_queue.put(table_tuple)
+
+            except :
+                break
+    def synchronization_queue_to_table(table) :
+        for i in table :
+            table_queue.put(i)
+        pass
+
 
     def get_table(filepath) :
             #table.csv
@@ -276,13 +324,29 @@ class sectors :
         table = setting.get_table("table.csv")
         #print("len(table) bf :",len(table))
 
-        table = setting.setting_column(table)
+        setting.synchronization_queue_to_table(table)
+        #table = setting.setting_column(table)
         #print("len(table) af :",len(table))
         #prints.print_list(table)
 
-
-        big_cat = selects.select_lv1_category(table)
         
+        for j in range(thread_count) :
+            #print("thread {} entered ".format(j))
+            thread = threading.Thread(target=setting.setting_column_on_queue)
+            thread.start()
+        for j in range(table_queue.qsize() % thread_count) :
+            setting.setting_column_on_queue()
+        #big_cat = selects.select_lv1_category(table)
+        
+        for j in range(thread_count) :
+
+            thread = threading.Thread(target=setting.setting_column_on_queue_bit_cat)
+            thread.start()
+
+        for j in range(table_queue.qsize() % thread_count) :
+            setting.setting_column_on_queue_bit_cat()
+
+        '''
         huge_cat = []
         for i in big_cat :
             appending_ops = str(i).split("(")[0]
@@ -290,7 +354,22 @@ class sectors :
                 huge_cat.append(appending_ops)
         print("sectors1 huge_cat :")
         prints.print_list(huge_cat)
+        '''
 
+        
+        print("big_cat_queue.qsize() :",big_cat_queue.qsize())
+        print("last_ops_queue.qsize() :",last_ops_queue.qsize())
+        print("table_queue.qsize() :",table_queue.qsize())
+        
+        huge_cat = []
+        for j in range(big_cat_queue.qsize()) :
+            temp1 = big_cat_queue.get()
+            huge_cat.append(temp1)
+        huge_cat = set(huge_cat)
+        huge_cat = list(huge_cat)
+        huge_cat.sort()
+        print("sector 1 huge_cat :")
+        prints.print_list(huge_cat)
         
         print("before get while")
 
@@ -388,6 +467,9 @@ class sectors :
         choose_exit = input("입력 : ")
         choose_exit.lower()
         print("\n\n")
+
+
+thread_count = 12
 
 root = tkinter.Tk()
 cv_width = 800
