@@ -369,16 +369,16 @@ class sectors :
         huge_cat = list(huge_cat)
         huge_cat.sort()
         print("sector 1 huge_cat :")
-        prints.print_list(huge_cat)
+        #prints.print_list(huge_cat)
         
         print("before get while")
 
         print("1")
         frame=tkinter.Frame(root)
-
+        button.forget()
         scrollbar=tkinter.Scrollbar(frame)
-        scrollbar.pack(side="right", fill="y")
-
+        scrollbar.place(side="right", fill="y")
+        #//////////////////////////////////////////////////////////////////////////////////////////
         listbox=tkinter.Listbox(frame, width=50, height=20, yscrollcommand = scrollbar.set)
         listbox = prints.get_div_6_on_listbox(huge_cat,listbox)
         listbox.pack(side="right")
@@ -473,11 +473,13 @@ thread_count = 12
 
 root = tkinter.Tk()
 cv_width = 800
-cv_height = 400
+cv_height = 600
 canvas = tkinter.Canvas(width=cv_width,height= cv_height)
 canvas.pack()
 text = tkinter.Label(text="Hello world")
-text.pack()
+#cv_height - cv_height // 2
+#cv_width - cv_width // 2
+text.place(x = 350,y = 50)
 button = tkinter.Button(text = "1.품목명별 정보 출력", font = ("System", 32),width=20,height=1,command=sectors.sector1)
-button.pack(side="top")
+button.place(x = 200,y = 200)
 root.mainloop()
