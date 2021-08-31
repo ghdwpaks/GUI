@@ -79,19 +79,24 @@ class prints :
     def get_div_6_on_listbox(table,listbox) :
         print(type(listbox))
 
-        
+        inserts = ""
         for i in range(len(table)) :
             if i % 6 == 0 and i != 0:
                 print()
+                #print("inserts :","'",inserts,"'")
+                listbox.insert(i//6,inserts)
+                inserts = ""
             print(table[i],end="\t")
             adds = ""
+
             if prints.get_real_length_on_CMD(table[i]) < 8 :
                 #print("\t\t",end="")
-                adds = "\t\t"
+                adds = "        "
             elif prints.get_real_length_on_CMD(table[i]) < 16 :
                 #print("\t",end="")
-                adds = "\t"
-            listbox.insert(i,str(table[i])+"\t"+adds)
+                adds = "    "
+            inserts = inserts + table[i] +adds
+            
 
         #os.system("pause")
         #for line in range(1,1001):
@@ -376,14 +381,15 @@ class sectors :
         print("1")
         frame=tkinter.Frame(root)
         button.forget()
-        scrollbar=tkinter.Scrollbar(frame)
-        scrollbar.place(side="right", fill="y")
+        #scrollbar=tkinter.Scrollbar(frame)
+        #scrollbar.place(side="right", fill="y")
         #//////////////////////////////////////////////////////////////////////////////////////////
-        listbox=tkinter.Listbox(frame, width=50, height=20, yscrollcommand = scrollbar.set)
+        listbox=tkinter.Listbox(frame, width=100, height=20)
         listbox = prints.get_div_6_on_listbox(huge_cat,listbox)
-        listbox.pack(side="right")
+        #listbox.place(height=1,width=1)
+        listbox.pack()
 
-        scrollbar["command"]=listbox.yview
+        #scrollbar["command"]=listbox.yview
 
         frame.pack()
 
@@ -481,5 +487,5 @@ text = tkinter.Label(text="Hello world")
 #cv_width - cv_width // 2
 text.place(x = 350,y = 50)
 button = tkinter.Button(text = "1.품목명별 정보 출력", font = ("System", 32),width=20,height=1,command=sectors.sector1)
-button.place(x = 200,y = 200)
+button.place(x = 210,y = 400)
 root.mainloop()
